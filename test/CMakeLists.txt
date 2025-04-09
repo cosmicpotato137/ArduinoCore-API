@@ -89,29 +89,6 @@ set(TEST_SRCS
   src/WCharacter/test_toAscii.cpp
 )
 
-set(TEST_DUT_SRCS
-  ../api/CanMsg.cpp
-  ../api/CanMsgRingbuffer.cpp
-  ../api/Common.cpp
-  ../api/IPAddress.cpp
-  ../api/String.cpp
-  ../api/Stream.cpp
-  ../api/Print.cpp
-)
-
-##########################################################################
-
-set(TEST_TARGET_SRCS
-  src/main.cpp
-  src/dtostrf.cpp
-  src/itoa.cpp
-  src/MillisFake.cpp
-  src/PrintMock.cpp
-  src/StreamMock.cpp
-  ${TEST_SRCS}
-  ${TEST_DUT_SRCS}
-)
-
 ##########################################################################
 
 add_compile_definitions(HOST)
@@ -138,7 +115,15 @@ endif()
 
 add_executable(
   ${TEST_TARGET}
-  ${TEST_TARGET_SRCS}
+  ${TEST_SRCS}
+)
+
+target_link_libraries(${TEST_TARGET} PUBLIC
+  ${CMAKE_PROJECT_NAME}
+  -lgcov
+)
+target_link_directories(${TEST_TARGET} PUBLIC
+  ${CMAKE_BINARY_DIR}/lib
 )
 
 ##########################################################################

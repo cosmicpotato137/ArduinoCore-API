@@ -1,30 +1,38 @@
 cmake_minimum_required(VERSION 3.5)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-project(cross-compile-ArduinoCore-API)
+project(cross-compiled-ArduinoCore-API)
 
-file(GLOB_RECURSE API_SOURCES ${CMAKE_SOURCE_DIR}/api/*.cpp)
-file(GLOB_RECURSE API_HEADERS ${CMAKE_SOURCE_DIR}/api/*.h)
-file(GLOB_RECURSE MOCK_SOURCES 
-    "${CMAKE_SOURCE_DIR}/test/include/*.cpp" 
-    "${CMAKE_SOURCE_DIR}/test/external/*.cpp"
-)
-file(GLOB_RECURSE MOCK_HEADERS 
-    "${CMAKE_SOURCE_DIR}/test/include/*.h" 
-    "${CMAKE_SOURCE_DIR}/test/external/*.h"
-)
-add_library(${CMAKE_PROJECT_NAME} 
-    ${API_SOURCES}
-    ${API_HEADERS}
-    ${MOCK_SOURCES}
-    ${MOCK_HEADERS}
+include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/test/include)
+include_directories(${CMAKE_SOURCE_DIR}/test/external/catch/v2.13.9/include)
+
+set(LIB_DUT_SRCS
+  api/CanMsg.cpp
+  api/CanMsgRingbuffer.cpp
+  api/Common.cpp
+  api/IPAddress.cpp
+  api/String.cpp
+  api/Stream.cpp
+  api/Print.cpp
 )
 
-include_directories(
-    ${CMAKE_SOURCE_DIR}/test/include
-    ${CMAKE_SOURCE_DIR}/api
+set(LIB_TARGET_SRCS
+  test/src/main.cpp
+  test/src/dtostrf.cpp
+  test/src/itoa.cpp
+  test/src/MillisFake.cpp
+  test/src/PrintMock.cpp
+  test/src/StreamMock.cpp
+  ${LIB_DUT_SRCS}
 )
+
+set(LIB_TARGET ${CMAKE_PROJECT_NAME})
+
+add_library(LIB_TARGET ${LIB_TARGET_SRCS})
 
 # Testing Project
 add_subdirectory(test)

@@ -4,7 +4,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-project(cross-compiled-ArduinoCore-API)
+project(ArduinoCore-API)
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/test/include)
@@ -32,7 +32,7 @@ set(LIB_TARGET_SRCS
 
 set(LIB_TARGET ${CMAKE_PROJECT_NAME})
 
-add_library(LIB_TARGET ${LIB_TARGET_SRCS})
+add_library(${LIB_TARGET} ${LIB_TARGET_SRCS})
 
 # Testing Project
 add_subdirectory(test)

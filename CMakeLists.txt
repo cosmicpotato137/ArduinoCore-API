@@ -30,7 +30,7 @@ set(LIB_TARGET_SRCS
   ${LIB_DUT_SRCS}
 )
 
-set(LIB_TARGET ${CMAKE_PROJECT_NAME})
+set(LIB_TARGET ArduinoCore-API)
 
 add_library(${LIB_TARGET} ${LIB_TARGET_SRCS})
 

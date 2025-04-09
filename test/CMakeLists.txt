@@ -1,28 +1,12 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-##########################################################################
-
-cmake_minimum_required(VERSION 2.8)
-
-##########################################################################
-
-project(test-ArduinoCore-API)
-
-##########################################################################
-
 include_directories(..)
 include_directories(include)
 include_directories(external/catch/v2.13.9/include)
 
 ##########################################################################
 
-set(CMAKE_CXX_STANDARD 11)
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
-##########################################################################
-
-set(TEST_TARGET ${CMAKE_PROJECT_NAME})
+set(TEST_TARGET test-ArduinoCore-API)
 
 ##########################################################################
 
@@ -136,6 +120,19 @@ add_compile_options(-Wno-cast-function-type)
 
 set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} --coverage")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -Wno-deprecated-copy")
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  message(STATUS "Using GCC compiler")
+  execute_process(
+    COMMAND ${CMAKE_CXX_COMPILER} -dumpversion
+    OUTPUT_VARIABLE GCC_VERSION_STRING
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+  message(STATUS "GCC version: ${GCC_VERSION_STRING}")
+  string(REPLACE "." ";" VERSION_LIST ${GCC_VERSION_STRING})
+  list(GET VERSION_LIST 0 GCC_VERSION_MAJOR)
+  add_compile_definitions(GCC_VERSION=${GCC_VERSION_MAJOR})
+endif()
 
 ##########################################################################
 

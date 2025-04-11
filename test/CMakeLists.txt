@@ -1,14 +1,9 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-include_directories(..)
-include_directories(include)
-include_directories(external/catch/v2.13.9/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/catch/v2.13.9/include)
 
-##########################################################################
-
-set(TEST_TARGET test-ArduinoCore-API)
-
-##########################################################################
 
 set(TEST_SRCS
   src/CanMsg/test_CanMsg.cpp
@@ -89,7 +84,6 @@ set(TEST_SRCS
   src/WCharacter/test_toAscii.cpp
 )
 
-##########################################################################
 
 add_compile_definitions(HOST)
 add_compile_options(-Wall -Wextra -Wpedantic -Werror)
@@ -111,20 +105,18 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   add_compile_definitions(GCC_VERSION=${GCC_VERSION_MAJOR})
 endif()
 
-##########################################################################
 
+# Add the test executable
+set(TEST_TARGET test-ArduinoCore-API)
 add_executable(
   ${TEST_TARGET}
   ${TEST_SRCS}
 )
 
 target_link_libraries(${TEST_TARGET} PUBLIC
-  ${CMAKE_PROJECT_NAME}
+  ${LIB_TARGET}
   -lgcov
 )
 target_link_directories(${TEST_TARGET} PUBLIC
   ${CMAKE_BINARY_DIR}/lib
 )
-
-##########################################################################
-
